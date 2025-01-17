@@ -15,7 +15,7 @@ pipeline {
 
         stage('Fetch Code') {
             steps {
-                git branch: 'paac', url: 'https://github.com/devopshydclub/vprofile-project.git'
+                git branch: 'main', url: 'https://github.com/Ammar-Abdelhady-ai/cicd-kube-docker.git'
             }
         }
         stage('BUILD'){
@@ -74,6 +74,14 @@ pipeline {
         stage("Remove Unused docker image") {
             step{
                 sh "docker rmi -f $dockerImage:V$BUILD_NUMBER"
+            }
+        }
+
+        stage("Kubernetes Deploy"){
+            steps{
+                script{
+                    sh "helm upgrade --install --force vprofile-stack helm/vprofilecharts --set appimage=${REGISTRY}:V${BUILD_NUMBER} --namespace prod"
+                }
             }
         }
 
