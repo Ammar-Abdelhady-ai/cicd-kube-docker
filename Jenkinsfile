@@ -1,4 +1,8 @@
 pipeline {
+    tools {
+    maven "maven3"
+    }
+
     agent any
     environment {
         REGISTRY = "ammarabdelhady8132/vproappdock"
